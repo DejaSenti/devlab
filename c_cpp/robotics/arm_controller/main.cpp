@@ -15,7 +15,7 @@ public:
 		  max_state_(max_state),
 		  velocity_(0.0f),
 		  max_velocity_(max_velocity),
-		  axis_(axis) {}
+		  axis_(axis.Normalized()) {}
 
 	float GetState() const
 	{
@@ -43,7 +43,7 @@ public:
 
 	virtual Transform GetRelativeTransform() const = 0;
 
-private:
+protected:
 	Vector3 axis_;
 	float state_; // rad or m
 	float min_state_;
@@ -56,8 +56,24 @@ private:
 class RotationalJoint : public BaseJoint
 {
 public:
+	// R =
+	// | c + x²(1-c)     xy(1-c) - z s    xz(1-c) + y s |
+	// | yx(1-c) + z s   c + y²(1-c)      yz(1-c) - x s |
+	// | zx(1-c) - y s   zy(1-c) + x s    c + z²(1-c)   |
 	Transform GetRelativeTransform() const
 	{
+		Rotation rot;
+		float c = std::cos(state_);
+		float s = std::sin(state_);
+		float x = axis_.x_;
+		float y = axis_.y_;
+		float z = axis_.z_;
+
+		rot.matrix_[0] = Vector3{c + x * x * (1 - c), x * y * (1 - c) - z * s, x * z * (1 - c) + y * s};
+		rot.matrix_[1] = Vector3{y * x * (1 - c) + z * s, c + y * y * (1 - c), y * z * (1 - c) - x * s};
+		rot.matrix_[2] = Vector3{z * x * (1 - c) - y * s, z * y * (1 - c) + x * s, c + z * z * (1 - c)};
+
+		return Transform(Vector3{0.0f, 0.0f, 0.0f}, rot);
 	}
 };
 
@@ -66,6 +82,7 @@ class PrismaticJoint : public BaseJoint
 public:
 	Transform GetRelativeTransform() const
 	{
+		return Transform(axis_ * state_, Rotation{});
 	}
 };
 
@@ -75,9 +92,20 @@ struct Vector3
 	float y_;
 	float z_;
 
+	Vector3 Normalized() const
+	{
+		float length = std::sqrt(x_ * x_ + y_ * y_ + z_ * z_);
+		return Vector3{x_ / length, y_ / length, z_ / length};
+	}
+
 	operator Point3() const
 	{
 		return Point3{x_, y_, z_};
+	}
+
+	Vector3 operator*(float scalar) const
+	{
+		return Vector3{x_ * scalar, y_ * scalar, z_ * scalar};
 	}
 };
 
@@ -87,7 +115,7 @@ struct Point3 : public Vector3
 
 struct Rotation
 {
-	// Vector of 3 rows
+	// Array of rows
 	std::array<Vector3, 3> matrix_;
 };
 
@@ -131,10 +159,6 @@ public:
 		return rotation_;
 	}
 
-	static Transform Inverse(const Transform &t)
-	{
-	}
-
 	friend Transform operator*(const Transform &t, const Transform &t_other);
 	friend Vector3 operator*(const Transform &t, const Vector3 &v);
 	friend Point3 operator*(const Transform &t, const Point3 &p);
@@ -172,6 +196,11 @@ public:
 
 	Vector3 GetRelativeTransform() const
 	{
+		Transform joint_transform = joint_->GetRelativeTransform();
+		Vector3 proximal_pos = link_proximal_.relative_transform_;
+		Vector3 distal_pos = link_distal_.relative_transform_;
+
+		return joint_transform * proximal_pos + distal_pos;
 	}
 
 	void SetJointVelocity(float vel)
