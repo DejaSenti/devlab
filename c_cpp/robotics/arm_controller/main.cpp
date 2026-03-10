@@ -41,6 +41,8 @@ public:
 			state_ = min_state_;
 	}
 
+	virtual Transform GetRelativeTransform() const = 0;
+
 private:
 	Vector3 axis_;
 	float state_; // rad or m
@@ -53,10 +55,18 @@ private:
 
 class RotationalJoint : public BaseJoint
 {
+public:
+	Transform GetRelativeTransform() const
+	{
+	}
 };
 
 class PrismaticJoint : public BaseJoint
 {
+public:
+	Transform GetRelativeTransform() const
+	{
+	}
 };
 
 struct Vector3
@@ -64,12 +74,51 @@ struct Vector3
 	float x_;
 	float y_;
 	float z_;
+
+	operator Point3() const
+	{
+		return Point3{x_, y_, z_};
+	}
 };
+
+struct Point3 : public Vector3
+{
+};
+
+struct Rotation
+{
+	// Vector of 3 rows
+	std::array<Vector3, 3> matrix_;
+};
+
+Vector3 operator+(const Vector3 &a, const Vector3 &b)
+{
+	return Vector3{a.x_ + b.x_, a.y_ + b.y_, a.z_ + b.z_};
+}
+
+Vector3 operator*(const Rotation &rot, const Vector3 &v)
+{
+	return Vector3{
+		rot.matrix_[0].x_ * v.x_ + rot.matrix_[0].y_ * v.y_ + rot.matrix_[0].z_ * v.z_,
+		rot.matrix_[1].x_ * v.x_ + rot.matrix_[1].y_ * v.y_ + rot.matrix_[1].z_ * v.z_,
+		rot.matrix_[2].x_ * v.x_ + rot.matrix_[2].y_ * v.y_ + rot.matrix_[2].z_ * v.z_};
+}
+
+Rotation operator*(const Rotation &a, const Rotation &b)
+{
+	Rotation result;
+	for (int i = 0; i < 3; ++i)
+	{
+		result.matrix_[i] = a * b.matrix_[i];
+	}
+
+	return result;
+}
 
 class Transform
 {
 public:
-	Transform(const Vector3 &pos, const std::array<Vector3, 3> &rot)
+	Transform(const Vector3 &pos, const Rotation &rot)
 		: position_(pos), rotation_(rot) {}
 
 	Vector3 GetPosition() const
@@ -77,31 +126,38 @@ public:
 		return position_;
 	}
 
-	std::array<Vector3, 3> GetRotation() const
+	Rotation GetRotation() const
 	{
 		return rotation_;
-	}
-
-	static Transform Compose(const Transform &a, const Transform &b)
-	{
 	}
 
 	static Transform Inverse(const Transform &t)
 	{
 	}
 
-	static Transform ApplyToVector(const Transform &t, const Vector3 &v)
-	{
-	}
-
-	static Transform ApplyToPoint(const Transform &t, const Vector3 &p)
-	{
-	}
+	friend Transform operator*(const Transform &t, const Transform &t_other);
+	friend Vector3 operator*(const Transform &t, const Vector3 &v);
+	friend Point3 operator*(const Transform &t, const Point3 &p);
 
 private:
 	Vector3 position_;
-	std::array<Vector3, 3> rotation_; // 3x3 rotation matrix
+	Rotation rotation_; // 3x3 rotation matrix
 };
+
+Transform operator*(const Transform &t, const Transform &t_other)
+{
+	return Transform(t.position_ + t.rotation_ * t_other.position_, t.rotation_ * t_other.rotation_);
+}
+
+Vector3 operator*(const Transform &t, const Vector3 &v)
+{
+	return t.position_ + t.rotation_ * v;
+}
+
+Point3 operator*(const Transform &t, const Point3 &p)
+{
+	return t.position_ + static_cast<Vector3>(p);
+}
 
 struct Link
 {
