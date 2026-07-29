@@ -26,7 +26,15 @@ include(CTest)
 
 if (BUILD_TESTING)
 	add_executable(${PROJECT_NAME}_test
-		test/test_main.cpp
+		tests/test_main.cpp
+		tests/test_articulation.cpp
+		tests/test_base_joint.cpp
+		tests/test_link.cpp
+		tests/test_prismatic_joint.cpp
+		tests/test_rotation.cpp
+		tests/test_rotational_joint.cpp
+		tests/test_transform.cpp
+		tests/test_vector3.cpp
 	)
 
 	target_link_libraries(${PROJECT_NAME}_test

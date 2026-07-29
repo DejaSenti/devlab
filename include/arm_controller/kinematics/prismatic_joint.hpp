@@ -8,6 +8,8 @@
 class PrismaticJoint : public BaseJoint
 {
 public:
+	using BaseJoint::BaseJoint;
+
 	Transform GetRelativeTransform() const
 	{
 		return Transform(axis_ * state_, Rotation{});

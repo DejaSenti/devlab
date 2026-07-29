@@ -6,8 +6,12 @@
 
 class BaseJoint
 {
+private:
+	static const float DEFAULT_STATE = 1000.0f;
+
 public:
-	BaseJoint(float initial_state, float min_state, float max_state, float max_velocity, Vector3 axis)
+	BaseJoint(float initial_state = 0.0f, float min_state = -DEFAULT_STATE, float max_state = DEFAULT_STATE,
+			  float max_velocity = DEFAULT_STATE, Vector3 axis = Vector3{0.0f, 0.0f, 1.0f})
 		: state_(initial_state),
 		  min_state_(min_state),
 		  max_state_(max_state),

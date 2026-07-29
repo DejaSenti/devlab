@@ -8,6 +8,8 @@
 class RotationalJoint : public BaseJoint
 {
 public:
+	using BaseJoint::BaseJoint;
+
 	// R =
 	// | c + x²(1-c)     xy(1-c) - z s    xz(1-c) + y s |
 	// | yx(1-c) + z s   c + y²(1-c)      yz(1-c) - x s |
