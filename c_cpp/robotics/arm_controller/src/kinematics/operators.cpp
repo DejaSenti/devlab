@@ -1,10 +1,7 @@
-#ifndef OPERATORS_HPP
-#define OPERATORS_HPP
-
-#include <rotation.hpp>
-#include <transform.hpp>
-#include <vector3.hpp>
-#include <point3.hpp>
+#include <arm_controller/kinematics/operators.hpp>
+#include <arm_controller/math/rotation.hpp>
+#include <arm_controller/math/transform.hpp>
+#include <arm_controller/math/vector3.hpp>
 
 Vector3 operator+(const Vector3 &a, const Vector3 &b)
 {
@@ -44,5 +41,3 @@ Point3 operator*(const Transform &t, const Point3 &p)
 {
 	return t.position_ + static_cast<Vector3>(p);
 }
-
-#endif // OPERATORS_HPP

@@ -2,10 +2,11 @@
 #define ARTICULATION_HPP
 
 #include <memory>
-#include <base_joint.hpp>
-#include <link.hpp>
-#include <vector3.hpp>
-#include <transform.hpp>
+#include <arm_controller/kinematics/base_joint.hpp>
+#include <arm_controller/kinematics/link.hpp>
+#include <arm_controller/kinematics/operators.hpp>
+#include <arm_controller/math/vector3.hpp>
+#include <arm_controller/math/transform.hpp>
 
 class Articulation
 {

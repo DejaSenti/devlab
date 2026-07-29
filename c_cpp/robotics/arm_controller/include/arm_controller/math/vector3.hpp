@@ -2,7 +2,8 @@
 #define VECTOR3_HPP
 
 #include <cmath>
-#include <point3.hpp>
+
+struct Point3;
 
 struct Vector3
 {
@@ -16,15 +17,21 @@ struct Vector3
 		return Vector3{x_ / length, y_ / length, z_ / length};
 	}
 
-	operator Point3() const
-	{
-		return Point3{x_, y_, z_};
-	}
+	operator Point3() const;
 
 	Vector3 operator*(float scalar) const
 	{
 		return Vector3{x_ * scalar, y_ * scalar, z_ * scalar};
 	}
 };
+
+struct Point3 : public Vector3
+{
+};
+
+inline Vector3::operator Point3() const
+{
+	return Point3{x_, y_, z_};
+}
 
 #endif // VECTOR3_HPP

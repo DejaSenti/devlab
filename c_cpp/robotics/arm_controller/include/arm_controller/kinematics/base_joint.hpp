@@ -1,8 +1,8 @@
 #ifndef BASE_JOINT_HPP
 #define BASE_JOINT_HPP
 
-#include <vector3.hpp>
-#include <transform.hpp>
+#include <arm_controller/math/vector3.hpp>
+#include <arm_controller/math/transform.hpp>
 
 class BaseJoint
 {
@@ -14,6 +14,8 @@ public:
 		  velocity_(0.0f),
 		  max_velocity_(max_velocity),
 		  axis_(axis.Normalized()) {}
+
+	virtual ~BaseJoint() = default;
 
 	float GetState() const
 	{

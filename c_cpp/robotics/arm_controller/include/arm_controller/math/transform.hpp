@@ -1,9 +1,8 @@
 #ifndef TRANSFORM_HPP
 #define TRANSFORM_HPP
 
-#include <vector3.hpp>
-#include <rotation.hpp>
-#include <point3.hpp>
+#include <arm_controller/math/vector3.hpp>
+#include <arm_controller/math/rotation.hpp>
 
 class Transform
 {

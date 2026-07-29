@@ -1,7 +1,7 @@
 #ifndef LINK_HPP
 #define LINK_HPP
 
-#include <vector3.hpp>
+#include <arm_controller/math/vector3.hpp>
 
 struct Link
 {

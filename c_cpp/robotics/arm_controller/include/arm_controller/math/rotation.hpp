@@ -2,7 +2,7 @@
 #define ROTATION_HPP
 
 #include <array>
-#include <vector3.hpp>
+#include <arm_controller/math/vector3.hpp>
 
 struct Rotation
 {
