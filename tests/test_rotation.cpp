@@ -14,9 +14,9 @@ bool TestRotation()
 	rotation.matrix_[2] = Vector3{0.0f, 0.0f, 1.0f};
 
 	Vector3 transformed = rotation * Vector3{1.0f, 2.0f, 3.0f};
-	ok &= ExpectClose(transformed.x_, 1.0f, 1e-5f, "Rotation identity x");
-	ok &= ExpectClose(transformed.y_, 2.0f, 1e-5f, "Rotation identity y");
-	ok &= ExpectClose(transformed.z_, 3.0f, 1e-5f, "Rotation identity z");
+	ok &= ExpectClose(transformed.x_, 1.0f, "Rotation identity x");
+	ok &= ExpectClose(transformed.y_, 2.0f, "Rotation identity y");
+	ok &= ExpectClose(transformed.z_, 3.0f, "Rotation identity z");
 
 	return ok;
 }

@@ -18,9 +18,9 @@ bool TestArticulation()
 	articulation.Update(1.0f);
 
 	Vector3 relative = articulation.GetRelativeTransform();
-	ok &= ExpectClose(relative.x_, 1.0f, 1e-5f, "Articulation relative transform x");
-	ok &= ExpectClose(relative.y_, 2.0f, 1e-5f, "Articulation relative transform y");
-	ok &= ExpectClose(relative.z_, 0.0f, 1e-5f, "Articulation relative transform z");
+	ok &= ExpectClose(relative.x_, 1.0f, "Articulation relative transform x");
+	ok &= ExpectClose(relative.y_, 2.0f, "Articulation relative transform y");
+	ok &= ExpectClose(relative.z_, 0.0f, "Articulation relative transform z");
 
 	return ok;
 }

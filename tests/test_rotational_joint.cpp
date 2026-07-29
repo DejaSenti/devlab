@@ -12,9 +12,9 @@ bool TestRotationalJoint()
 	joint.UpdateState(0.0f);
 
 	Transform transform = joint.GetRelativeTransform();
-	ok &= ExpectClose(transform.GetPosition().x_, 0.0f, 1e-5f, "Rotational joint position x");
-	ok &= ExpectClose(transform.GetPosition().y_, 0.0f, 1e-5f, "Rotational joint position y");
-	ok &= ExpectClose(transform.GetPosition().z_, 0.0f, 1e-5f, "Rotational joint position z");
+	ok &= ExpectClose(transform.GetPosition().x_, 0.0f, "Rotational joint position x");
+	ok &= ExpectClose(transform.GetPosition().y_, 0.0f, "Rotational joint position y");
+	ok &= ExpectClose(transform.GetPosition().z_, 0.0f, "Rotational joint position z");
 
 	return ok;
 }

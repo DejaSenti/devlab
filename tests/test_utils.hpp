@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 
+#define EPSILON (1e-5f)
+
 inline bool Expect(bool condition, const std::string &message)
 {
 	if (!condition)
@@ -15,9 +17,9 @@ inline bool Expect(bool condition, const std::string &message)
 	return true;
 }
 
-inline bool ExpectClose(float actual, float expected, float tolerance, const std::string &message)
+inline bool ExpectClose(float actual, float expected, const std::string &message)
 {
-	if (std::fabs(actual - expected) > tolerance)
+	if (std::fabs(actual - expected) > EPSILON)
 	{
 		std::cerr << "[FAIL] " << message << " expected " << expected << " but got " << actual << std::endl;
 		return false;

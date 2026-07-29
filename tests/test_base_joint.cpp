@@ -24,12 +24,12 @@ bool TestBaseJoint()
 	PrismaticJoint prismatic;
 	prismatic.SetVelocity(2.0f);
 	prismatic.UpdateState(0.5f);
-	ok &= ExpectClose(prismatic.GetState(), 1.0f, 1e-5f, "Prismatic joint state update");
+	ok &= ExpectClose(prismatic.GetState(), 1.0f, "Prismatic joint state update");
 
 	RotationalJoint rotational;
 	rotational.SetVelocity(1.0f);
 	rotational.UpdateState(0.5f);
-	ok &= ExpectClose(rotational.GetState(), 0.5f, 1e-5f, "Rotational joint state update");
+	ok &= ExpectClose(rotational.GetState(), 0.5f, "Rotational joint state update");
 
 	return ok;
 }

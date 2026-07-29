@@ -12,9 +12,9 @@ bool TestPrismaticJoint()
 	joint.UpdateState(0.5f);
 
 	Transform transform = joint.GetRelativeTransform();
-	ok &= ExpectClose(transform.GetPosition().x_, 1.0f, 1e-5f, "Prismatic joint position x");
-	ok &= ExpectClose(transform.GetPosition().y_, 0.0f, 1e-5f, "Prismatic joint position y");
-	ok &= ExpectClose(transform.GetPosition().z_, 0.0f, 1e-5f, "Prismatic joint position z");
+	ok &= ExpectClose(transform.GetPosition().x_, 1.0f, "Prismatic joint position x");
+	ok &= ExpectClose(transform.GetPosition().y_, 0.0f, "Prismatic joint position y");
+	ok &= ExpectClose(transform.GetPosition().z_, 0.0f, "Prismatic joint position z");
 
 	return ok;
 }
