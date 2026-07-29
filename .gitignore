@@ -1,7 +1,3 @@
-# Rust
-target/
-Cargo.lock
-
 # C/C++
 *.o
 *.exe
